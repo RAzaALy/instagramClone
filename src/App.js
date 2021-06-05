@@ -6,8 +6,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import "./App.css";
 import { Input } from "@material-ui/core";
+import PostUpload from "./components/PostUpload";
+import Scroll from './components/Scroll';
+import "./App.css";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -17,6 +19,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -34,14 +37,16 @@ function App() {
     };
   }, [user, username]);
   useEffect(() => {
-    db.collection("posts").onSnapshot((snapshot) => {
-      setPosts(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          post: doc.data(),
-        }))
-      );
-    });
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            post: doc.data(),
+          }))
+        );
+      });
   }, []);
 
   // modal style
@@ -73,13 +78,14 @@ function App() {
   };
   const signIn = (e) => {
     e.preventDefault();
-    auth.signInWithEmailAndPassword(email,password).catch((error) => alert(error.message))
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message));
     setOpenSign(false);
-  }
+  };
   return (
     <>
       <div className="App">
-        {/* Sign up Modal */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -94,7 +100,7 @@ function App() {
         >
           <Fade in={open}>
             <div className={classes.paper}>
-              <form className="app__singup">
+              <form className="app__signup">
                 <center>
                   <img className="app__headerImg" src="logo.svg" alt="logo" />
                 </center>
@@ -139,7 +145,7 @@ function App() {
         >
           <Fade in={openSign}>
             <div className={classes.paper}>
-              <form className="app__singup">
+              <form className="app__signup">
                 <center>
                   <img className="app__headerImg" src="logo.svg" alt="logo" />
                 </center>
@@ -166,25 +172,22 @@ function App() {
         {/* Header */}
         <div className="app__header">
           <img src="logo.svg" alt="logo" className="app__headerImg" />
+          {user ? (
+            <Button className="app__headerLogout" variant="outlined" color="primary" onClick={() => auth.signOut()}>
+              Logout
+            </Button>
+          ) : (
+            <div className="app__loginContainer">
+              <Button variant="outlined" color="primary" onClick={() => setOpenSign(true)}>
+                Sign In
+              </Button>
+              <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>
+                Sign Up
+              </Button>
+            </div>
+          )}
         </div>
-        {user ? (
-          <Button variant="outlined" onClick={() => auth.signOut()}>
-            Logout
-          </Button>
-        ) : (
-          <div className="app__loginContainer">
-            <Button variant="outlined" onClick={() => setOpenSign(true)}>
-              Sign In
-            </Button>
-            <Button variant="outlined" onClick={() => setOpen(true)}>
-              Sign Up
-            </Button>
-          </div>
-        )}
 
-        <h1>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero ducimu.
-        </h1>
         {/* posts */}
         {posts.map(({ id, post }) => (
           <Post
@@ -194,6 +197,12 @@ function App() {
             imgUrl={post.imgUrl}
           />
         ))}
+        {user?.displayName ? (
+          <PostUpload username={user.displayName} />
+        ) : (
+          console.log('ubable to upload')
+        )}
+        <Scroll showBelow={250} />
       </div>
     </>
   );

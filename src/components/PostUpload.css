@@ -1,0 +1,66 @@
+.PostUpload {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.PostUpload__progress {
+  width: 100%;
+  height: 4vh;
+}
+.progress {
+  margin: 2rem 0rem;
+  height: 2vh !important;
+  border-radius: 4rem;
+}
+.MuiOutlinedInput-input {
+  padding: 17.5px 10px !important;
+}
+.MuiInputBase-input {
+  height: 1.1876em !important;
+}
+.MuiInputBase-root {
+  font-size: 1.3rem !important;
+}
+.MuiFormLabel-root {
+  font-size: 1.2rem !important;
+}
+.makeStyles-button-518 {
+  margin: 0 !important;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: "Select Post Images";
+  color: #3f51b5;
+  display: inline-block;
+  border: 1px solid #5064d5;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 10pt;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+.custom-file-input:hover::before {
+  border-color: #3e54d5;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+/* emoji */
+.emoji-mart {
+    z-index: 444 !important;
+    position: fixed !important;
+    right: 1% !important;
+    bottom: 2% !important;
+    width: 273px !important;
+  }
