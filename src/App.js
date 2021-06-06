@@ -8,7 +8,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Input } from "@material-ui/core";
 import PostUpload from "./components/PostUpload";
-import Scroll from './components/Scroll';
+import Scroll from "./components/Scroll";
+import InstagramEmbed from "react-instagram-embed";
 import "./App.css";
 
 function App() {
@@ -173,15 +174,28 @@ function App() {
         <div className="app__header">
           <img src="logo.svg" alt="logo" className="app__headerImg" />
           {user ? (
-            <Button className="app__headerLogout" variant="outlined" color="primary" onClick={() => auth.signOut()}>
+            <Button
+              className="app__headerLogout"
+              variant="outlined"
+              color="primary"
+              onClick={() => auth.signOut()}
+            >
               Logout
             </Button>
           ) : (
             <div className="app__loginContainer">
-              <Button variant="outlined" color="primary" onClick={() => setOpenSign(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setOpenSign(true)}
+              >
                 Sign In
               </Button>
-              <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setOpen(true)}
+              >
                 Sign Up
               </Button>
             </div>
@@ -189,18 +203,34 @@ function App() {
         </div>
 
         {/* posts */}
-        {posts.map(({ id, post }) => (
-          <Post
-            key={id}
-            username={post.username}
-            caption={post.caption}
-            imgUrl={post.imgUrl}
-          />
-        ))}
+        <div className="app__posts">
+          {posts.map(({ id, post }) => (
+            <Post
+              key={id}
+              user={user}
+              postId={id}
+              username={post.username}
+              caption={post.caption}
+              imgUrl={post.imgUrl}
+            />
+          ))}
+        </div>
+        <InstagramEmbed
+          url="https://www.instagram.com/p/B_uf9dmAGPw/"
+          maxWidth={320}
+          hideCaption={false}
+          containerTagName="div"
+          protocol=""
+          injectScript
+          onLoading={() => {}}
+          onSuccess={() => {}}
+          onAfterRender={() => {}}
+          onFailure={() => {}}
+        />
         {user?.displayName ? (
           <PostUpload username={user.displayName} />
         ) : (
-          console.log('ubable to upload')
+          console.log("ubable to upload")
         )}
         <Scroll showBelow={250} />
       </div>

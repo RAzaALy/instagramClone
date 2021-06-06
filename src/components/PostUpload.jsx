@@ -81,8 +81,8 @@ const PostUpload = ({ username }) => {
     button: {
       margin: theme.spacing(1),
       padding: "1rem",
-      fontSize: "1.3rem",
-      width: "20%",
+      fontSize: "1.5rem",
+      width: "12%",
     },
     root: {
       "& > *": {
@@ -163,7 +163,7 @@ const PostUpload = ({ username }) => {
           className={classes.button}
           startIcon={<EmojiEmotionsRoundedIcon />}
         >
-          Emoji
+          
         </Button>
       )}
 
@@ -172,11 +172,12 @@ const PostUpload = ({ username }) => {
         <Button
           variant="outlined"
           color="primary"
+          title="upload" 
           onClick={handleUpload}
           className={classes.button}
           startIcon={<CloudUploadIcon />}
         >
-          Upload
+          
         </Button>
       </div>
     </div>

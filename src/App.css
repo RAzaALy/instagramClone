@@ -3,6 +3,9 @@
   position: relative;
 }
 .app__header {
+  z-index: 394935;
+  position: sticky;
+  top: 0;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
@@ -25,7 +28,16 @@
 .app__headerLogout{
   font-size: 1.3rem !important;
 }
+.app__posts{
+  padding: 2rem;
+}
 .app__loginContainer  > Button{
  margin-right: 1rem !important;
  font-size: 1.3rem !important;
+}
+@media (max-width: 768px) {
+  html{
+    font-size: 52.5%;
+  }
+  
 }
