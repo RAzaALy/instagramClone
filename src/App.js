@@ -9,7 +9,7 @@ import Fade from "@material-ui/core/Fade";
 import { Input } from "@material-ui/core";
 import PostUpload from "./components/PostUpload";
 import Scroll from "./components/Scroll";
-import InstagramEmbed from "react-instagram-embed";
+// import InstagramEmbed from "react-instagram-embed";
 import "./App.css";
 
 function App() {
@@ -71,11 +71,13 @@ function App() {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        return authUser.updateProfile({
-          displayName: username,
+         return authUser.user.updateProfile({
+          displayName : username
         });
       })
       .catch((error) => alert(error.message));
+      setOpen(false);
+  
   };
   const signIn = (e) => {
     e.preventDefault();
@@ -87,6 +89,7 @@ function App() {
   return (
     <>
       <div className="App">
+        {/* signup modal */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -215,7 +218,7 @@ function App() {
             />
           ))}
         </div>
-        <InstagramEmbed
+        {/* <InstagramEmbed
           url="https://www.instagram.com/p/B_uf9dmAGPw/"
           maxWidth={320}
           hideCaption={false}
@@ -226,12 +229,8 @@ function App() {
           onSuccess={() => {}}
           onAfterRender={() => {}}
           onFailure={() => {}}
-        />
-        {user?.displayName ? (
-          <PostUpload username={user.displayName} />
-        ) : (
-          console.log("ubable to upload")
-        )}
+        /> */}
+        {user?.displayName && <PostUpload username={user.displayName} />}
         <Scroll showBelow={250} />
       </div>
     </>

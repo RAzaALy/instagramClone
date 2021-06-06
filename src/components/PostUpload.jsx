@@ -16,7 +16,6 @@ const PostUpload = ({ username }) => {
   const [post, setPost] = useState(null);
   const [emoji, setEmoji] = useState({ showEmojis: false });
 
-
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setPost(e.target.files[0]);
@@ -61,20 +60,14 @@ const PostUpload = ({ username }) => {
   };
 
   const closeMenu = (e) => {
-    setEmoji(
-      {
-        showEmojis: false,
-      },
-      
-    );
+    setEmoji({
+      showEmojis: false,
+    });
   };
   const showEmojis = (e) => {
-    setEmoji(
-      {
-        showEmojis: true,
-      },
-     
-    );
+    setEmoji({
+      showEmojis: true,
+    });
   };
 
   const useStyles = makeStyles((theme) => ({
@@ -96,6 +89,8 @@ const PostUpload = ({ username }) => {
   }));
   const classes = useStyles();
   return (
+    <div className="container">
+
     <div className="PostUpload">
       {/* following steps for upload post image  🔥 🚀*/}
 
@@ -129,70 +124,61 @@ const PostUpload = ({ username }) => {
 
       {/* Post Btn 🅱️ */}
       <div className="cotnainer">
-
-
-      {emoji.showEmojis ? (
-        <>
-          <Picker
-            showPreview={false}
-            emoji="point_up"
-            emojiSize={30}
-            showEmojis={true}
-            emojiTooltip={true}
-            className={styles.emojiPicker}
-            title="WeChat"
-            onSelect={(emoji) => setCaption(caption + emoji.native)}
-          />
+        {emoji.showEmojis ? (
+          <>
+            <Picker
+              showPreview={false}
+              emoji="point_up"
+              emojiSize={30}
+              showEmojis={true}
+              emojiTooltip={true}
+              className={styles.emojiPicker}
+              title="Caption..."
+              onSelect={(emoji) => setCaption(caption + emoji.native)}
+            />
+            <Button
+              title="pick emoji"
+              onClick={closeMenu}
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+              startIcon={<EmojiEmotionsRoundedIcon />}
+            ></Button>
+          </>
+        ) : (
           <Button
-          title="pick emoji" 
-          onClick={closeMenu}
-          variant="outlined"
-          color="primary"
-          className={classes.button}
-          startIcon={<EmojiEmotionsRoundedIcon />}
-        >
-          Emoji
-        </Button>
-        </>
-      ) : (
-        <Button
-          title="pick emoji" 
-          onClick={showEmojis}
-          variant="outlined"
-          color="primary"
-          className={classes.button}
-          startIcon={<EmojiEmotionsRoundedIcon />}
-        >
-          
-        </Button>
-      )}
+            title="pick emoji"
+            onClick={showEmojis}
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            startIcon={<EmojiEmotionsRoundedIcon />}
+          ></Button>
+        )}
 
-
-   
         <Button
           variant="outlined"
           color="primary"
-          title="upload" 
+          title="upload"
           onClick={handleUpload}
           className={classes.button}
           startIcon={<CloudUploadIcon />}
-        >
-          
-        </Button>
+        ></Button>
       </div>
+    </div>
     </div>
   );
 };
 
 export default PostUpload;
 const styles = {
-    emojiPicker: {
-      cursor: "pointer",
-      zIndex: 333,
-      position: "fixed",
-      bottom: "3.5%",
-      left: "4%",
-      border: "none",
-      margin: 0,
-    },
-  };
+  emojiPicker: {
+    cursor: "pointer",
+    zIndex: 333,
+    position: "fixed",
+    bottom: "3.5%",
+    left: "4%",
+    border: "none",
+    margin: 0,
+  },
+};

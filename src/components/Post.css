@@ -1,8 +1,9 @@
 .post {
-  max-width: 50rem;
+  max-width: 60rem;
   background-color: #fff;
   border: 1px solid lightgray;
   margin-bottom: 4rem;
+  position: relative;
 }
 .post__img {
   width: 100%;
@@ -31,6 +32,7 @@
 .post__input {
   flex: 1;
   padding: 0.4rem;
+  padding-left: 1rem;
   border: none;
   outline: none;
   border-top: 1px solid lightgray;

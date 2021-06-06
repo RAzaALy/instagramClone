@@ -1,3 +1,9 @@
+.container {
+  background-color: #f3f3f3;
+  width: 100%;
+  position: relative;
+}
+
 .PostUpload {
   display: flex;
   flex-direction: column;
@@ -56,11 +62,11 @@
 .custom-file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
-/* emoji */
+/* emoji mart */
 .emoji-mart {
-    z-index: 444 !important;
-    position: fixed !important;
-    right: 1% !important;
-    bottom: 2% !important;
-    width: 273px !important;
-  }
+  z-index: 4445 !important;
+  position: absolute !important;
+  right: 0% !important ;
+  bottom: 6% !important;
+  width: 300px !important;
+}
