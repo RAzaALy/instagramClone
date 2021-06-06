@@ -51,3 +51,14 @@
 .post__comment {
   padding: 1rem 2rem;
 }
+@media (max-width: 380px) {
+  .postBtn{
+    display: none;
+  }
+  .post__commentBox{
+    overflow: hidden;
+  }
+  html{
+    font-style: 52.5%;
+  }
+}

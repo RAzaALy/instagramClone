@@ -79,7 +79,7 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
             onChange={(e) => setComment(e.target.value)}
           />
           <button
-            className="post__button"
+            className="post__button postBtn"
             disabled={!comment}
             type="submit"
             onClick={postComment}

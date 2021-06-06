@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Input } from "@material-ui/core";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import PostUpload from "./components/PostUpload";
 import Scroll from "./components/Scroll";
 // import InstagramEmbed from "react-instagram-embed";
@@ -21,11 +23,12 @@ function App() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
+  // 🔥 base authentication:
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         //user has log in
-        console.log(authUser);
+        // console.log(authUser);
         setUser(authUser);
       } else {
         //user has log out
@@ -37,6 +40,8 @@ function App() {
       unsubscribe();
     };
   }, [user, username]);
+
+  //get post from databas 🔥;
   useEffect(() => {
     db.collection("posts")
       .orderBy("timestamp", "desc")
@@ -50,7 +55,7 @@ function App() {
       });
   }, []);
 
-  // modal style
+  // 🙂 modal style
   const useStyles = makeStyles((theme) => ({
     modal: {
       display: "flex",
@@ -65,30 +70,91 @@ function App() {
       padding: theme.spacing(2, 4, 3),
     },
   }));
+
   const classes = useStyles();
+  //signup functinality 🚀
   const signup = (e) => {
     e.preventDefault();
+    if(username.length > 2){
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-         return authUser.user.updateProfile({
-          displayName : username
+        toast.success(`Welcome ${username} to Instagram Clone`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return authUser.user.updateProfile({
+          displayName: username,
         });
       })
-      .catch((error) => alert(error.message));
-      setOpen(false);
-  
+      .catch((error) => {
+        toast.error(`${error.message}`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+    }else{
+      toast.warning(`Username must contain 3 characters.`, {
+        position: "top-right",
+        zIndex: 43343434,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    setOpen(false);
   };
+  //sign in functionality:
   const signIn = (e) => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
-      .catch((error) => alert(error.message));
+      .then(() => {
+        toast.success(`Welcome to Instagram Clone App`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((error) => {
+        toast.error(`${error.message}`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
     setOpenSign(false);
   };
+
   return (
     <>
       <div className="App">
+        <ToastContainer style={{ fontSize: "1.4rem" }} />
         {/* signup modal */}
         <Modal
           aria-labelledby="transition-modal-title"
@@ -181,7 +247,19 @@ function App() {
               className="app__headerLogout"
               variant="outlined"
               color="primary"
-              onClick={() => auth.signOut()}
+              onClick={() => {
+                auth.signOut();
+                toast.success(`You have successfully Log out.`, {
+                  position: "top-right",
+                  zIndex: 43343434,
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+              }}
             >
               Logout
             </Button>
