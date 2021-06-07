@@ -9,12 +9,12 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(0.5),
-    color: "black",
-    backgroundColor: "#DCDCDC",
+    color: "#fff",
+    backgroundColor: "#111",
     "&:hover, &.Mui-focusVisible": {
       transition: "0.3s",
-      color: "#222",
-      backgroundColor: "#DCDCDC",
+      color: "#fff",
+      backgroundColor: "#333",
     },
     
   },
@@ -49,7 +49,7 @@ const Scroll = ({ showBelow }, ref) => {
     <div>
       {show && (
         <IconButton onClick={handleClick} className={classes.root}>
-          <KeyboardArrowUpIcon />
+          <KeyboardArrowUpIcon  style={{fontSize: "2rem"}} />
         </IconButton>
       )}
     </div>

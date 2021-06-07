@@ -5,11 +5,13 @@ import firebase from "firebase";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import "./Post.css";
+
 const Post = ({ username, caption, imgUrl, postId, user }) => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [emoji, setEmoji] = useState({ showEmojis: false });
 
+  //get comments from 🔥 db:
   useEffect(() => {
     let unsubscribe;
     if (postId) {
@@ -17,15 +19,17 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
         .collection("posts")
         .doc(postId)
         .collection("comments")
-        .orderBy("timestamp", "desc")
+        // .orderBy("timestamp", "desc")
         .onSnapshot((snapshot) => {
           setComments(snapshot.docs.map((doc) => doc.data()));
         });
     }
+    //celanup function:
     return () => {
       unsubscribe();
     };
   }, [postId]);
+  //post a comment 👍
   const postComment = (e) => {
     e.preventDefault();
     db.collection("posts").doc(postId).collection("comments").add({
@@ -53,7 +57,6 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
         <Avatar className="post__avatar" alt="RAza ALy" src="me.png" />
         <h3>{username}</h3>
       </div>
-
       {/* image */}
       <img className="post__img" src={imgUrl} alt="avatar" />
       <h4 className="post__txt">
@@ -62,6 +65,7 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
       </h4>
       {/* comments here */}
       <div className="post__comments">
+      <h3 className="post__commentTitle">Comments</h3>
         {comments.map((comment, index) => (
           <p className="post__comment" key={index}>
             <strong>{comment.username} : </strong>
@@ -102,14 +106,18 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
                 title="pick emoji"
                 onClick={closeMenu}
                 className="post__button"
-              >😄</button>
+              >
+                😄
+              </button>
             </>
           ) : (
             <button
               title="pick emoji"
               onClick={showEmojis}
               className="post__button"
-            >😄</button>
+            >
+              😄
+            </button>
           )}
         </form>
       )}

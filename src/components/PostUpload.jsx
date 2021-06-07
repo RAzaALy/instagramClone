@@ -8,12 +8,16 @@ import EmojiEmotionsRoundedIcon from "@material-ui/icons/EmojiEmotionsRounded";
 import { storage, db } from "../firebase";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import firebase from "firebase";
 import "./PostUpload.css";
+
 const PostUpload = ({ username }) => {
   const [caption, setCaption] = useState("");
   const [progress, setProgress] = useState(0);
   const [post, setPost] = useState(null);
+  const [css, setCss] = useState(false);
   const [emoji, setEmoji] = useState({ showEmojis: false });
 
   const handleChange = (e) => {
@@ -21,12 +25,14 @@ const PostUpload = ({ username }) => {
       setPost(e.target.files[0]);
     }
   };
+  //get post images from 🔥 storage:
   const handleUpload = () => {
     const uploadPost = storage.ref(`images/${post.name}`).put(post);
+
     uploadPost.on(
       "state_changed",
       (snapshot) => {
-        //pgorgress function ... 😄
+        //progress function ... 😄
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
@@ -34,8 +40,18 @@ const PostUpload = ({ username }) => {
       },
       (error) => {
         //error Function:
-        console.log(error);
-        alert(error.message);
+        // console.log(error);
+        toast.error(`${error.message}`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        // alert(error.message);
       },
       () => {
         //Final function: 🚀
@@ -55,6 +71,16 @@ const PostUpload = ({ username }) => {
             setCaption("");
             setPost(null);
           });
+        toast.info(`Your post has been uploaded successfully.`, {
+          position: "top-right",
+          zIndex: 43343434,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     );
   };
@@ -63,11 +89,13 @@ const PostUpload = ({ username }) => {
     setEmoji({
       showEmojis: false,
     });
+    setCss(false);
   };
   const showEmojis = (e) => {
     setEmoji({
       showEmojis: true,
     });
+    setCss(true);
   };
 
   const useStyles = makeStyles((theme) => ({
@@ -90,82 +118,86 @@ const PostUpload = ({ username }) => {
   const classes = useStyles();
   return (
     <div className="container">
+      <ToastContainer style={{ fontSize: "1.4rem" }} />
 
-    <div className="PostUpload">
-      {/* following steps for upload post image  🔥 🚀*/}
+      <div
+        className="PostUpload"
+        style={css ? { height: "50rem" } : { height: "25rem" }}
+      >
+        {/* following steps for upload post image  🔥 🚀*/}
 
-      {/* Caption Input  🏒*/}
-      {/* <progress className="PostUpload__progress" value={progress} max="100" /> */}
-      <div className={classes.progress}>
-        <LinearProgress
-          className="progress"
-          variant="determinate"
-          value={progress}
+        {/* <progress className="PostUpload__progress" value={progress} max="100" /> */}
+        <div className={classes.progress}>
+          <LinearProgress
+            className="progress"
+            variant="determinate"
+            value={progress}
+          />
+        </div>
+        {/* File upload 🆙 */}
+        <input
+          className="custom-file-input"
+          type="file"
+          onChange={handleChange}
         />
-      </div>
-      {/* File upload 🆙 */}
-      <input
-        className="custom-file-input"
-        type="file"
-        onChange={handleChange}
-      />
 
-      <form className={classes.root} noValidate autoComplete="off">
-        <TextField
-          className="caption"
-          type="text"
-          value={caption}
-          id="outlined-basic"
-          label="Take a Caption"
-          variant="outlined"
-          onChange={(e) => setCaption(e.target.value)}
-        />
-      </form>
+        <form className={classes.root} noValidate autoComplete="off">
+          {/* Caption textField  🏒*/}
+          <TextField
+            className="caption"
+            type="text"
+            value={caption}
+            id="outlined-basic"
+            label="Take a Caption"
+            variant="outlined"
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        </form>
 
-      {/* Post Btn 🅱️ */}
-      <div className="cotnainer">
-        {emoji.showEmojis ? (
-          <>
-            <Picker
-              showPreview={false}
-              emoji="point_up"
-              emojiSize={30}
-              showEmojis={true}
-              emojiTooltip={true}
-              className={styles.emojiPicker}
-              title="Caption..."
-              onSelect={(emoji) => setCaption(caption + emoji.native)}
-            />
+        {/* upload Btn 🅱️ */}
+        <div className="cotnainer">
+          {emoji.showEmojis ? (
+            <>
+              <Picker
+                showPreview={false}
+                emoji="point_up"
+                emojiSize={30}
+                showEmojis={true}
+                emojiTooltip={true}
+                className={styles.emojiPicker}
+                title="Caption..."
+                onSelect={(emoji) => setCaption(caption + emoji.native)}
+              />
+              <Button
+                title="pick emoji"
+                onClick={closeMenu}
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                startIcon={<EmojiEmotionsRoundedIcon />}
+              ></Button>
+            </>
+          ) : (
             <Button
               title="pick emoji"
-              onClick={closeMenu}
+              onClick={showEmojis}
               variant="outlined"
               color="primary"
               className={classes.button}
               startIcon={<EmojiEmotionsRoundedIcon />}
             ></Button>
-          </>
-        ) : (
+          )}
+
           <Button
-            title="pick emoji"
-            onClick={showEmojis}
             variant="outlined"
             color="primary"
+            title="upload"
+            onClick={handleUpload}
             className={classes.button}
-            startIcon={<EmojiEmotionsRoundedIcon />}
+            startIcon={<CloudUploadIcon />}
           ></Button>
-        )}
-
-        <Button
-          variant="outlined"
-          color="primary"
-          title="upload"
-          onClick={handleUpload}
-          className={classes.button}
-          startIcon={<CloudUploadIcon />}
-        ></Button>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@
   position: relative;
 }
 .app__header {
-  z-index: 394;
+  z-index: 333;
   position: sticky;
   top: 0;
   background-color: #fff;
@@ -20,24 +20,30 @@
   align-items: center;
   border: 1px solid lightgray;
 }
-.app__signup{
-  display: flex; 
+.app__signup {
+  display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
 }
-.app__headerLogout{
+.submit {
+  margin-top: 1rem !important;
+  text-transform: capitalize !important;
   font-size: 1.3rem !important;
 }
-.app__posts{
+.app__headerLogout {
+  font-size: 1.3rem !important;
+  text-transform: capitalize !important;
+}
+.app__posts {
   padding: 2rem;
 }
-.app__loginContainer  > Button{
- margin-right: 1rem !important;
- font-size: 1.3rem !important;
+.app__loginContainer > Button {
+  margin-right: 1rem !important;
+  font-size: 1.3rem !important;
+  text-transform: capitalize !important;
 }
+
 @media (max-width: 768px) {
-  html{
+  html {
     font-size: 52.5%;
   }
-  
 }

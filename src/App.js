@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Post from "./components/Post";
 import { db, auth } from "./firebase";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,6 +8,7 @@ import Fade from "@material-ui/core/Fade";
 import { Input } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Post from "./components/Post";
 import PostUpload from "./components/PostUpload";
 import Scroll from "./components/Scroll";
 // import InstagramEmbed from "react-instagram-embed";
@@ -64,49 +64,53 @@ function App() {
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
-      border: "1px solid #000",
+      border: "2px solid #7294DF",
       width: "40%",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      "@media(max-Width: 768px)": {
+        width: "80%",
+      },
     },
   }));
 
   const classes = useStyles();
+
   //signup functinality 🚀
   const signup = (e) => {
     e.preventDefault();
-    if(username.length > 2){
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        toast.success(`Welcome ${username} to Instagram Clone`, {
-          position: "top-right",
-          zIndex: 43343434,
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+    if (username.length > 2) {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          toast.success(`Welcome ${username} to Instagram Clone`, {
+            position: "top-right",
+            zIndex: 43343434,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          return authUser.user.updateProfile({
+            displayName: username,
+          });
+        })
+        .catch((error) => {
+          toast.error(`${error.message}`, {
+            position: "top-right",
+            zIndex: 43343434,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
-        return authUser.user.updateProfile({
-          displayName: username,
-        });
-      })
-      .catch((error) => {
-        toast.error(`${error.message}`, {
-          position: "top-right",
-          zIndex: 43343434,
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
-    }else{
-      toast.warning(`Username must contain 3 characters.`, {
+    } else {
+      toast.warning(`Username must contain 3 characters or more.`, {
         position: "top-right",
         zIndex: 43343434,
         autoClose: 5000,
@@ -119,7 +123,9 @@ function App() {
     }
     setOpen(false);
   };
-  //sign in functionality:
+
+  // 🔥 sign in functionality:
+
   const signIn = (e) => {
     e.preventDefault();
     auth
@@ -154,6 +160,7 @@ function App() {
   return (
     <>
       <div className="App">
+        {/* toastify container 🚀 */}
         <ToastContainer style={{ fontSize: "1.4rem" }} />
         {/* signup modal */}
         <Modal
@@ -177,12 +184,14 @@ function App() {
 
                 <Input
                   placeholder="username"
+                  autoComplete="off"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
                 <Input
                   placeholder="email"
+                  autoComplete="off"
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -190,10 +199,17 @@ function App() {
                 <Input
                   placeholder="password"
                   type="password"
+                  autoComplete="off"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button type="submit" onClick={signup}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  className="submit"
+                  onClick={signup}
+                >
                   Sign Up
                 </Button>
               </form>
@@ -222,6 +238,7 @@ function App() {
 
                 <Input
                   placeholder="email"
+                  autoComplete="off"
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -229,10 +246,17 @@ function App() {
                 <Input
                   placeholder="password"
                   type="password"
+                  autoComplete="off"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button type="submit" onClick={signIn}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  className="submit"
+                  onClick={signIn}
+                >
                   Sign In
                 </Button>
               </form>
@@ -308,7 +332,7 @@ function App() {
           onAfterRender={() => {}}
           onFailure={() => {}}
         /> */}
-        {user?.displayName && <PostUpload username={user.displayName} />}
+        {user && <PostUpload username={user.displayName} />}
         <Scroll showBelow={250} />
       </div>
     </>
