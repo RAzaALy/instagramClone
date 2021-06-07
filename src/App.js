@@ -109,8 +109,8 @@ function App() {
             progress: undefined,
           });
         });
-        setUsername(username);
-        setUser(username)
+      setUsername(username);
+      setUser(username);
     } else {
       toast.warning(`Username must contain 3 characters or more.`, {
         position: "top-right",
