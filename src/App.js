@@ -28,8 +28,8 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         //user has log in
-        // console.log(authUser);
-        setUser(authUser);
+        // console.log(authUser.displayName);
+        setUser(authUser.displayName);
       } else {
         //user has log out
         setUser(null);
@@ -44,7 +44,7 @@ function App() {
   //get post from databas 🔥;
   useEffect(() => {
     db.collection("posts")
-      .orderBy("timestamp", "desc")
+      .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
         setPosts(
           snapshot.docs.map((doc) => ({
@@ -109,6 +109,8 @@ function App() {
             progress: undefined,
           });
         });
+        setUsername(username);
+        setUser(username)
     } else {
       toast.warning(`Username must contain 3 characters or more.`, {
         position: "top-right",
@@ -121,6 +123,7 @@ function App() {
         progress: undefined,
       });
     }
+    // setUsername('');
     setOpen(false);
   };
 
@@ -332,7 +335,7 @@ function App() {
           onAfterRender={() => {}}
           onFailure={() => {}}
         /> */}
-        {user && <PostUpload username={user.displayName} />}
+        {user && <PostUpload username={user} />}
         <Scroll showBelow={250} />
       </div>
     </>

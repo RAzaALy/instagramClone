@@ -6,7 +6,8 @@ import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import "./Post.css";
 
-const Post = ({ username, caption, imgUrl, postId, user }) => {
+const Post = ({username, caption, imgUrl, postId, user }) => {
+  console.log(username);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [emoji, setEmoji] = useState({ showEmojis: false });
@@ -19,7 +20,7 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
         .collection("posts")
         .doc(postId)
         .collection("comments")
-        // .orderBy("timestamp", "desc")
+        .orderBy("timestamp", "asc")
         .onSnapshot((snapshot) => {
           setComments(snapshot.docs.map((doc) => doc.data()));
         });
@@ -34,7 +35,7 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
     e.preventDefault();
     db.collection("posts").doc(postId).collection("comments").add({
       text: comment,
-      username: user.displayName,
+      username: user,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setComment("");
@@ -65,7 +66,7 @@ const Post = ({ username, caption, imgUrl, postId, user }) => {
       </h4>
       {/* comments here */}
       <div className="post__comments">
-      <h3 className="post__commentTitle">Comments</h3>
+        <h3 className="post__commentTitle">Comments</h3>
         {comments.map((comment, index) => (
           <p className="post__comment" key={index}>
             <strong>{comment.username} : </strong>
