@@ -7,7 +7,7 @@ import { Picker } from "emoji-mart";
 import "./Post.css";
 
 const Post = ({username, caption, imgUrl, postId, user }) => {
-  console.log(username);
+  // console.log(username);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [emoji, setEmoji] = useState({ showEmojis: false });
@@ -35,7 +35,7 @@ const Post = ({username, caption, imgUrl, postId, user }) => {
     e.preventDefault();
     db.collection("posts").doc(postId).collection("comments").add({
       text: comment,
-      username: user,
+      username: user.displayName,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setComment("");

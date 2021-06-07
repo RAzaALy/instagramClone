@@ -29,7 +29,7 @@ function App() {
       if (authUser) {
         //user has log in
         // console.log(authUser.displayName);
-        setUser(authUser.displayName);
+        setUser(authUser);
       } else {
         //user has log out
         setUser(null);
@@ -44,7 +44,7 @@ function App() {
   //get post from databas 🔥;
   useEffect(() => {
     db.collection("posts")
-      .orderBy("timestamp", "asc")
+      .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setPosts(
           snapshot.docs.map((doc) => ({
@@ -93,6 +93,7 @@ function App() {
             draggable: true,
             progress: undefined,
           });
+          setUser(authUser);
           return authUser.user.updateProfile({
             displayName: username,
           });
