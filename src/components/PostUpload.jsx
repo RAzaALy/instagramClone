@@ -28,7 +28,6 @@ const PostUpload = ({ username }) => {
   //get post images from 🔥 storage:
   const handleUpload = () => {
     const uploadPost = storage.ref(`images/${post.name}`).put(post);
-
     uploadPost.on(
       "state_changed",
       (snapshot) => {
